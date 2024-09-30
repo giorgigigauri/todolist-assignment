@@ -1,4 +1,4 @@
-# Project Name
+# Todo App
 
 This project is a Laravel-based application that handles task and project management with authentication. It includes features such as task filtering, project statistics, and user authentication.
 
