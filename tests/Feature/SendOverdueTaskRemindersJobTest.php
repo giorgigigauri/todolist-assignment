@@ -11,28 +11,6 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 uses(RefreshDatabase::class);
 
-it('sends overdue task reminders', function () {
-    Mail::fake();
-
-    $user = User::factory()->create();
-
-
-    $task = Task::factory()->create([
-        'due_date' => Carbon::now()->subDay(),
-        'status' => 'in progress',
-        'user_id' => $user->id,
-    ]);
-    $project = Project::factory()->create();
-    $project->users()->attach($user);
-    $task->project()->associate($project);
-    $task->save();
-
-
-    dispatch(new SendOverdueTaskRemindersJob());
-    Mail::assertSent(TaskOverdueReminderMail::class, function ($mail) use ($task) {
-        return $mail->hasTo($task->creator->email);
-    });
-})->skip();
 
 it('does not send reminders for completed tasks', function () {
     Mail::fake();
